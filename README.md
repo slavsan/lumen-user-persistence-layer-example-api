@@ -50,6 +50,15 @@ eval $(docker-machine env)
 docker-compose build
 ```
 
+### Run the docker images
+
+```
+docker-compose up
+```
+
+You can stop the images by pressing `ctrl+c` or leave them in the background
+with `ctrl+z`.
+
 ### Create the database
 
 We need to setup our database which is going to be used. There is a create_database.sh shell script provided which
@@ -59,15 +68,6 @@ the password `secret` on the command line.
 ```
 ./create_database.sh
 ```
-
-### Run the docker images
-
-```
-docker-compose up
-```
-
-You can stop the images by pressing `ctrl+c` or leave them in the background
-with `ctrl+z`.
 
 You should now have the app accessible at `http://192.168.99.100/api/v1/users`.
 In case this is not the correct IP, you can check which is the correct with the following command:
