@@ -1,0 +1,162 @@
+swagger: '2.0'
+info:
+  version: "0.0.0"
+  title: User persistence layer API
+  description: Simple API for persisting users
+host: 192.168.99.100
+basepath: /api/v1/
+schemas:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /api/v1/users/{userId}:
+    get:
+      summary: Fetch one user
+      description: |
+        Get `User` object.
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          description: Specify ID to be deleted (should be greater than 0)
+          type: integer
+      responses:
+        200:
+          description: A user object
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: Request contains invalid parameter
+        404:
+          description: User could not be found
+    put:
+      summary: Update a user
+      description: |
+        Update `User` objects.
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          description: Specify ID to be deleted (should be greater than 0)
+          type: integer
+        - name: body
+          in: body
+          description: JSON-encoded string
+          type: string
+          schema:
+            $ref: '#/definitions/User'
+          default: '{"email":"peter.griffin@example.com","forename":"Peter","surname":"Griffin"}'
+      responses:
+        200:
+          description: Update operation was succcessful
+        400:
+          description: Request contains invalid parameter
+        404:
+          description: User was not found for ID
+        422:
+          description: Validation failed
+          schema:
+            type: object
+            $ref: '#/definitions/UserError'
+    delete:
+      summary: Deletes an user
+      description: |
+        Deletes an `User` object (hard delete).
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          in: path
+          description: Specify ID to be deleted (should be greater than 0)
+          type: integer
+      responses:
+        204:
+          description: Successful deletion
+        400:
+          description: Request contains invalid parameter
+        404:
+          description: User was not found for ID
+  /api/v1/users:
+    get:
+      summary: Fetch list of users
+      description: |
+        Gets `User` objects.
+      tags:
+        - Users
+      responses:
+        200:
+          description: An array of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+    post:
+      summary: Creates a user
+      description: |
+        Creates an `User` object.
+      tags:
+        - Users
+      responses:
+        201:
+          description: Successful user creation
+          headers:
+            Location:
+              description: Location of newly created user
+              type: string
+        422:
+          description: Validation failed
+          schema:
+            type: object
+            $ref: '#/definitions/UserError'
+      parameters:
+        - name: body
+          in: body
+          description: JSON-encoded string
+          type: string
+          schema:
+            $ref: '#/definitions/User'
+          default: '{"email":"john.doe@example.com","forename":"John","surname":"Doe"}'
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique identifier representing a specific user
+        default: 21
+      email:
+        type: string
+        description: Email of the user (unique)
+        default: john.doe@example.com
+      forename:
+        type: string
+        description: Users forename
+        default: John
+      surname:
+        type: string
+        description: Users surname
+        default: Doe
+      created:
+        type: string
+        description: The date and hour when the user was created
+        default: "2016-05-10 16:21:56"
+  UserError:
+    type: object
+    properties:
+      email:
+        type: array
+        items:
+          type: string
+      forename:
+        type: array
+        items:
+          type: string
+      surname:
+        type: array
+        items:
+          type: string
