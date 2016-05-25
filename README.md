@@ -20,8 +20,8 @@ you need something more complex.
 ### Clone this repo
 
 ```
-git clone repo
-cd repo
+git clone https://github.com/slavsan/lumen-user-persistence-layer-example-api
+cd lumen-user-persistence-layer-example-api
 ```
 
 ### Install Lumen with composer
